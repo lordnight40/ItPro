@@ -18,7 +18,6 @@ public sealed class ClientConfiguration : IEntityTypeConfiguration<Client>
         builder
             .HasMany(client => client.Orders)
             .WithOne(order => order.Client)
-            .HasForeignKey()
             // Лучше оставить Restrict, т.к. по умолчания Cascade, а каскадное удаление на практике редко нужно
             .OnDelete(DeleteBehavior.Restrict);
     }

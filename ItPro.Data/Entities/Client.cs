@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ItPro.Data.Entities;
 
 /// <summary>
@@ -8,17 +10,20 @@ public sealed class Client : BaseEntity
     /// <summary>
     /// Имя.
     /// </summary>
+    [Required]
     public string Name { get; set; }
     
     /// <summary>
     /// Фамилия.
     /// </summary>
+    [Required]
     public string Surname { get; set; }
     
     /// <summary>
     /// Отчество.
     /// </summary>
-    public DateOnly BirthDay { get; set; }
+    [Required]
+    public DateTime BirthDay { get; set; }
     
     /// <summary>
     /// Заказы клиента.
