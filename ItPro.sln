@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItPro.Api", "ItPro.Api\ItPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItPro.Data", "ItPro.Data\ItPro.Data.csproj", "{BFF03FD6-1E77-41FF-81B9-A1C1119D9AF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItPro.Core", "ItPro.Core\ItPro.Core.csproj", "{8A6E465F-4BDD-4E70-9CBF-8F4C38FC27D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{BFF03FD6-1E77-41FF-81B9-A1C1119D9AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFF03FD6-1E77-41FF-81B9-A1C1119D9AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFF03FD6-1E77-41FF-81B9-A1C1119D9AF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6E465F-4BDD-4E70-9CBF-8F4C38FC27D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6E465F-4BDD-4E70-9CBF-8F4C38FC27D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6E465F-4BDD-4E70-9CBF-8F4C38FC27D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6E465F-4BDD-4E70-9CBF-8F4C38FC27D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
