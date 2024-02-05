@@ -4,10 +4,11 @@ using ItPro.Data.Entities;
 
 namespace ItPro.Api.Mapping;
 
-public sealed class ClientModelToClientProfile : Profile
+public sealed class ClientMappingProfile : Profile
 {
-    public ClientModelToClientProfile()
+    public ClientMappingProfile()
     {
         CreateMap<ClientModel, Client>();
+        CreateMap<Client, ClientModel>();
     }
 }

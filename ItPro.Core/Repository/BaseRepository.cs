@@ -1,3 +1,4 @@
+using ItPro.Core.Exceptions;
 using ItPro.Data;
 using ItPro.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,11 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
 
     public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
+        if (await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
+        {
+            throw new AlreadyExistsException($"Сущность с идентификатором {entity.Id} уже существует.");
+        }
+        
         this.context
             .Set<T>()
             .Add(entity);
@@ -45,6 +51,11 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
 
     public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
+        if (!await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
+        {
+            throw new NotFoundException($"Не удалось найти сущность с идентификатором {entity.Id}");
+        }
+        
         this.context
             .Set<T>()
             .Update(entity);
@@ -59,6 +70,11 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         var entity = await this.context
             .Set<T>()
             .SingleOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+
+        if (entity is null)
+        {
+            throw new NotFoundException($"Не удалось найти сущность с идентификатором {id}");
+        }
 
         this.context
             .Set<T>()
