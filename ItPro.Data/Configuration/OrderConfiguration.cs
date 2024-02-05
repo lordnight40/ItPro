@@ -5,8 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItPro.Data.Configuration;
 
+/// <summary>
+/// Конфигурация сущности клиента.
+/// </summary>
 public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Order> builder)
     {
         builder.HasKey(order => order.Id);
