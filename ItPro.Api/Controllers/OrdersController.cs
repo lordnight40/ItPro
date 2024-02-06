@@ -31,7 +31,7 @@ public sealed class OrdersController : ControllerBase
     [HttpGet("list")]
     [ProducesResponseType(typeof(PagedObject<OrderModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> List(OrderQueryParameters queryString)
+    public async Task<IActionResult> List([FromQuery] OrderQueryParameters queryString)
     {
         try
         {

@@ -9,4 +9,6 @@ public sealed class OrderModel
     public DateTime CreatedAt { get; set; }
     
     public Guid ClientId { get; set; }
+    
+    public ClientModel Client { get; set; }
 }

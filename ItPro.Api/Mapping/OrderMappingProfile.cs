@@ -12,7 +12,8 @@ public sealed class OrderMappingProfile : Profile
         CreateMap<OrderModel, Order>()
             .ForMember(order => order.Client, config => config.MapFrom(x => new Client { Id = x.ClientId}));
         
-        CreateMap<Order, OrderModel>();
+        CreateMap<Order, OrderModel>()
+            .ForMember(orderModel => orderModel.ClientId, config => config.MapFrom(x => x.Client.Id));
         
         CreateMap<PagedObject<Order>, PagedObject<OrderModel>>()
             .ConstructUsing((x, ctx) => new PagedObject<OrderModel>(

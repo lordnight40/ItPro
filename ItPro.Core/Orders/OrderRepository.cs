@@ -19,6 +19,7 @@ public sealed class OrderRepository : BaseRepository<Order>
     {
         var getQuery = this.context.Orders
             .AsNoTracking()
+            .Include(order => order.Client)
             .ApplySorting(queryString.OrderBy, queryString.SortingOrder)
             .ApplyFilter(queryString as OrderQueryParameters);
 
@@ -33,8 +34,7 @@ public sealed class OrderRepository : BaseRepository<Order>
         }
 
         var client = await this.context.Clients
-            .AsNoTracking()
-            .SingleOrDefaultAsync(client => client.Id == entity.Id, cancellationToken);
+            .SingleOrDefaultAsync(client => client.Id == entity.Client.Id, cancellationToken);
 
         if (client is null)
         {
@@ -44,11 +44,43 @@ public sealed class OrderRepository : BaseRepository<Order>
         entity.Client = client;
         entity.CreatedAt = DateTime.Now;
         entity.Status = Status.NotInProgress;
-        
+
         this.context.Orders.Add(entity);
-        
+
         await this.context.SaveChangesAsync(cancellationToken);
 
         return entity;
+    }
+
+    public override async Task<Order> UpdateAsync(Order entity, CancellationToken cancellationToken = default)
+    {
+        var order = await this.context.Orders
+            .Include(order => order.Client)
+            .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken);
+            
+        if (order is null)
+        {
+            throw new NotFoundException($"Не удалось найти сущность с идентификатором {entity.Id}");
+        }
+
+        order.CreatedAt = entity.CreatedAt;
+        order.Status = entity.Status;
+        order.Amount = entity.Amount;
+
+        if (order.Client.Id != entity.Client.Id)
+        {
+            var client = await this.context.Clients.SingleOrDefaultAsync(client => client.Id == entity.Client.Id, cancellationToken);
+
+            if (client is null)
+            {
+                throw new NotFoundException($"Пользователь с Id = {entity.Client.Id} для заказа не найден.");
+            }
+            
+            order.Client = client;
+        }
+
+        await this.context.SaveChangesAsync(cancellationToken);
+
+        return order;
     }
 }

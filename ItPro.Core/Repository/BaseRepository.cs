@@ -26,7 +26,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return await getQuery.ToPagedListAsync(queryString.PageNumber, queryString.PageSize, cancellationToken);
     }
 
-    public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await this.context
             .Set<T>()
@@ -51,7 +51,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return entity;
     }
 
-    public async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    public virtual async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (!await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
         {
@@ -67,7 +67,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return entity;
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await this.context
             .Set<T>()
@@ -84,5 +84,4 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
 
         await this.context.SaveChangesAsync(cancellationToken);
     }
-    
 }

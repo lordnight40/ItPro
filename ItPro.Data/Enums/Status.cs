@@ -8,15 +8,15 @@ public enum Status
     /// <summary>
     /// Не обработан.
     /// </summary>
-    NotInProgress,
+    NotInProgress = 0,
     
     /// <summary>
     /// Отменен.
     /// </summary>
-    Canceled,
+    Canceled = 1,
     
     /// <summary>
     /// Выполнен.
     /// </summary>
-    Completed
+    Completed = 2
 }
