@@ -1,4 +1,6 @@
 using ItPro.Core.Exceptions;
+using ItPro.Core.Helpful;
+using ItPro.Core.Repository.Queries;
 using ItPro.Data;
 using ItPro.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +16,14 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         this.context = context;
     }
     
-    public async Task<IReadOnlyCollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<PagedList<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
-        var result = await this.context
+        var getQuery = this.context
             .Set<T>()
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
-        
-        return result.AsReadOnly();
+            .ApplySorting(queryString.OrderBy, queryString.SortingOrder);
+
+        return await getQuery.ToPagedListAsync(queryString.PageNumber, queryString.PageSize, cancellationToken);
     }
 
     public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -33,7 +35,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
             .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
+    public virtual async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
         {
@@ -82,4 +84,5 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
 
         await this.context.SaveChangesAsync(cancellationToken);
     }
+    
 }

@@ -1,7 +1,6 @@
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using ItPro.Api.Mapping;
 using ItPro.Core.Clients;
 using ItPro.Core.Orders;
 using ItPro.Core.Repository;

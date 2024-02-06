@@ -1,8 +1,8 @@
 using System.Net.Mime;
 using AutoMapper;
 using ItPro.Api.Models;
-using ItPro.Core.Clients;
 using ItPro.Core.Exceptions;
+using ItPro.Core.Orders;
 using ItPro.Core.Repository;
 using ItPro.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +11,13 @@ namespace ItPro.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class UsersController : ControllerBase
+public sealed class OrdersController : ControllerBase
 {
-    private readonly IRepository<Client> repository;
+    private readonly IRepository<Order> repository;
     private readonly IMapper mapper;
 
-    public UsersController(
-        IRepository<Client> repository,
+    public OrdersController(
+        IRepository<Order> repository,
         IMapper mapper)
     {
         this.repository = repository;
@@ -25,18 +25,18 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Получение списка всех клиентов.
+    /// Получение списка всех заказов.
     /// </summary>
     /// <returns>Список клиентов.</returns>
     [HttpGet("list")]
-    [ProducesResponseType(typeof(IReadOnlyCollection<ClientModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IReadOnlyCollection<OrderModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> List(ClientQueryParameters queryString)
+    public async Task<IActionResult> List(OrderQueryParameters queryString)
     {
         try
         {
             var result = await this.repository.GetAllAsync(queryString, HttpContext.RequestAborted);
-            var mappedResult = this.mapper.Map<IReadOnlyCollection<ClientModel>>(result);
+            var mappedResult = this.mapper.Map<IReadOnlyCollection<OrderModel>>(result);
         
             return Ok(mappedResult);
         }
@@ -47,12 +47,12 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Получить клиента по идентификатору.
+    /// Получить заказ по идентификатору.
     /// </summary>
-    /// <param name="id">Идентификатор клиента.</param>
-    /// <returns>Информация о клиенте.</returns>
+    /// <param name="id">Идентификатор заказа.</param>
+    /// <returns>Информация о заказе.</returns>
     [HttpGet("get-by-id")]
-    [ProducesResponseType(typeof(ClientModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OrderModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetById(Guid id)
@@ -66,7 +66,7 @@ public sealed class UsersController : ControllerBase
                 return NotFound();
             }
             
-            return Ok(this.mapper.Map<ClientModel>(result));
+            return Ok(this.mapper.Map<OrderModel>(result));
         }
         catch (Exception e)
         {
@@ -75,26 +75,26 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Создать нового клиента.
+    /// Создать новый заказ.
     /// </summary>
-    /// <param name="client">Информация для добавления клиента.</param>
-    /// <returns>Информация о клиенте.</returns>
+    /// <param name="order">Информация для добавления заказа.</param>
+    /// <returns>Информация о заказе.</returns>
     [HttpPost("create")]
-    [ProducesResponseType(typeof(ClientModel), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(OrderModel), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Consumes(MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> Create(ClientModel client)
+    public async Task<IActionResult> Create(OrderModel order)
     {
-        var entity = this.mapper.Map<Client>(client);
+        var entity = this.mapper.Map<Order>(order);
 
         try
         {
             var result = await this.repository.CreateAsync(entity, HttpContext.RequestAborted);
 
-            return StatusCode(StatusCodes.Status201Created, this.mapper.Map<Client>(result));
+            return StatusCode(StatusCodes.Status201Created, this.mapper.Map<Order>(result));
         }
-        catch (AlreadyExistsException e)
+        catch (Exception e) when(e is AlreadyExistsException or NotFoundException)
         {
             return BadRequest(e.Message);
         }
@@ -105,24 +105,24 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Редактировать существующего клиента.
+    /// Редактировать существующий заказ.
     /// </summary>
-    /// <param name="client">Информация для обновления клиента.</param>
-    /// <returns>Информация о клиенте.</returns>
+    /// <param name="order">Информация для обновления заказа.</param>
+    /// <returns>Информация о заказе.</returns>
     [HttpPatch("update")]
-    [ProducesResponseType(typeof(ClientModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OrderModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Consumes(MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> Update(ClientModel client)
+    public async Task<IActionResult> Update(OrderModel order)
     {
-        var entity = this.mapper.Map<Client>(client);
+        var entity = this.mapper.Map<Order>(order);
 
         try
         {
             var result = await this.repository.UpdateAsync(entity, HttpContext.RequestAborted);
 
-            return Ok(this.mapper.Map<ClientModel>(result));
+            return Ok(this.mapper.Map<OrderModel>(result));
         }
         catch (NotFoundException e)
         {
@@ -135,7 +135,7 @@ public sealed class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Удалить клиента по идентификатору.
+    /// Удалить заказ по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор клиента.</param>
     [HttpDelete("delete")]

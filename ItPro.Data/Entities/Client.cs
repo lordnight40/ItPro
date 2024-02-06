@@ -5,7 +5,7 @@ namespace ItPro.Data.Entities;
 /// <summary>
 /// Сущность клиента.
 /// </summary>
-public sealed class Client : BaseEntity
+public class Client : BaseEntity
 {
     /// <summary>
     /// Имя.
