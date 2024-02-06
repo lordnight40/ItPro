@@ -15,7 +15,7 @@ public sealed class OrderRepository : BaseRepository<Order>
     {
     }
     
-    public override async Task<PagedList<Order>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
+    public override async Task<PagedObject<Order>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context.Orders
             .AsNoTracking()

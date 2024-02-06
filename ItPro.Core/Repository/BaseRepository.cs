@@ -16,7 +16,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         this.context = context;
     }
     
-    public virtual async Task<PagedList<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
+    public virtual async Task<PagedObject<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context
             .Set<T>()

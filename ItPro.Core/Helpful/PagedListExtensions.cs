@@ -6,7 +6,7 @@ namespace ItPro.Core.Helpful;
 
 public static class PagedListExtensions
 {
-    public static async Task<PagedList<T>> ToPagedListAsync<T>(
+    public static async Task<PagedObject<T>> ToPagedListAsync<T>(
         this IQueryable<T> source,
         int pageNumber,
         int pageSize,
@@ -19,6 +19,6 @@ public static class PagedListExtensions
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedList<T>(items, count, pageNumber, pageSize);
+        return new PagedObject<T>(items, count, pageNumber, pageSize);
     }
 }

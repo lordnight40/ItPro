@@ -1,9 +1,11 @@
-using ItPro.Data.Entities;
-
 namespace ItPro.Core.Repository;
 
-public sealed class PagedList<T> : List<T> where T: BaseEntity
+public sealed class PagedObject<T>
 {
+    private readonly List<T> items = new List<T>();
+
+    public List<T> Items => this.items;
+
     public int CurrentPage { get; private set; }
     
     public int TotalPages { get; private set; }
@@ -16,7 +18,7 @@ public sealed class PagedList<T> : List<T> where T: BaseEntity
     
     public bool HasNext => CurrentPage < TotalPages;
 
-    public PagedList(
+    public PagedObject(
         IEnumerable<T> items,
         int count,
         int pageNumber,
@@ -27,6 +29,6 @@ public sealed class PagedList<T> : List<T> where T: BaseEntity
         CurrentPage = pageNumber;
         TotalPages = (int) Math.Ceiling(count / (double) pageSize);
         
-        AddRange(items);
+        this.items.AddRange(items);
     }
 }

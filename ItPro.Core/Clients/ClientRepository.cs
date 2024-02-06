@@ -13,7 +13,7 @@ public sealed class ClientRepository : BaseRepository<Client>
     {
     }
 
-    public override async Task<PagedList<Client>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
+    public override async Task<PagedObject<Client>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context.Clients
             .AsNoTracking()

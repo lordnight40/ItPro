@@ -29,14 +29,14 @@ public sealed class OrdersController : ControllerBase
     /// </summary>
     /// <returns>Список клиентов.</returns>
     [HttpGet("list")]
-    [ProducesResponseType(typeof(IReadOnlyCollection<OrderModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedObject<OrderModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> List(OrderQueryParameters queryString)
     {
         try
         {
             var result = await this.repository.GetAllAsync(queryString, HttpContext.RequestAborted);
-            var mappedResult = this.mapper.Map<IReadOnlyCollection<OrderModel>>(result);
+            var mappedResult = this.mapper.Map<PagedObject<OrderModel>>(result);
         
             return Ok(mappedResult);
         }

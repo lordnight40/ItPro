@@ -5,7 +5,7 @@ namespace ItPro.Core.Repository;
 
 public interface IRepository<T> where T: BaseEntity
 {
-    Task<PagedList<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default);
+    Task<PagedObject<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default);
 
     Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

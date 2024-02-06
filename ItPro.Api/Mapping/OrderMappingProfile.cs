@@ -1,5 +1,6 @@
 using AutoMapper;
 using ItPro.Api.Models;
+using ItPro.Core.Repository;
 using ItPro.Data.Entities;
 
 namespace ItPro.Api.Mapping;
@@ -12,5 +13,12 @@ public sealed class OrderMappingProfile : Profile
             .ForMember(order => order.Client, config => config.MapFrom(x => new Client { Id = x.ClientId}));
         
         CreateMap<Order, OrderModel>();
+        
+        CreateMap<PagedObject<Order>, PagedObject<OrderModel>>()
+            .ConstructUsing((x, ctx) => new PagedObject<OrderModel>(
+                x.Items.Select(item => ctx.Mapper.Map<OrderModel>(item)),
+                x.TotalCount,
+                x.CurrentPage,
+                x.PageSize));
     }
 }

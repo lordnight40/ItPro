@@ -11,12 +11,12 @@ namespace ItPro.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class UsersController : ControllerBase
+public sealed class ClientsController : ControllerBase
 {
     private readonly IRepository<Client> repository;
     private readonly IMapper mapper;
 
-    public UsersController(
+    public ClientsController(
         IRepository<Client> repository,
         IMapper mapper)
     {
@@ -29,15 +29,15 @@ public sealed class UsersController : ControllerBase
     /// </summary>
     /// <returns>Список клиентов.</returns>
     [HttpGet("list")]
-    [ProducesResponseType(typeof(IReadOnlyCollection<ClientModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedObject<ClientModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> List(ClientQueryParameters queryString)
+    public async Task<IActionResult> List([FromQuery] ClientQueryParameters queryString)
     {
         try
         {
             var result = await this.repository.GetAllAsync(queryString, HttpContext.RequestAborted);
-            var mappedResult = this.mapper.Map<IReadOnlyCollection<ClientModel>>(result);
-        
+            var mappedResult = this.mapper.Map<PagedObject<ClientModel>>(result);
+
             return Ok(mappedResult);
         }
         catch (Exception e)
@@ -92,7 +92,7 @@ public sealed class UsersController : ControllerBase
         {
             var result = await this.repository.CreateAsync(entity, HttpContext.RequestAborted);
 
-            return StatusCode(StatusCodes.Status201Created, this.mapper.Map<Client>(result));
+            return StatusCode(StatusCodes.Status201Created, this.mapper.Map<ClientModel>(result));
         }
         catch (AlreadyExistsException e)
         {
