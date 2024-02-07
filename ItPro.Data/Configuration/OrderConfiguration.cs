@@ -15,6 +15,8 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.HasKey(order => order.Id);
 
+        // Для более красивого хранения перечисления в базе настраиваем конвертацию
+        // Строка более красиво и понятно смотрится, чем число, имхо
         builder
             .Property(order => order.Status)
             .HasConversion(x => Enum.GetName(x), y => Enum.Parse<Status>(y));

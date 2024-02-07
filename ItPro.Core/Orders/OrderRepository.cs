@@ -9,12 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItPro.Core.Orders;
 
+/// <summary>
+/// Репозиторий для работы с заказами.
+/// </summary>
 public sealed class OrderRepository : BaseRepository<Order>
 {
     public OrderRepository(DataContext context) : base(context)
     {
     }
     
+    /// <inheritdoc/>
     public override async Task<PagedObject<Order>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context.Orders
@@ -26,6 +30,7 @@ public sealed class OrderRepository : BaseRepository<Order>
         return await getQuery.ToPagedListAsync(queryString.PageNumber, queryString.PageSize, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public override async Task<Order> CreateAsync(Order entity, CancellationToken cancellationToken = default)
     {
         if (await this.context.Orders.AnyAsync(x => x.Id == entity.Id, cancellationToken))
@@ -46,12 +51,12 @@ public sealed class OrderRepository : BaseRepository<Order>
         entity.Status = Status.NotInProgress;
 
         this.context.Orders.Add(entity);
-
         await this.context.SaveChangesAsync(cancellationToken);
 
         return entity;
     }
 
+    /// <inheritdoc/>
     public override async Task<Order> UpdateAsync(Order entity, CancellationToken cancellationToken = default)
     {
         var order = await this.context.Orders

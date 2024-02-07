@@ -3,6 +3,9 @@ using ItPro.Api.Models;
 
 namespace ItPro.Api.Validators;
 
+/// <summary>
+/// Валидатор для клиента, получаемого из запроса к API.
+/// </summary>
 public sealed class ClientModelValidator : AbstractValidator<ClientModel>
 {
     public ClientModelValidator()

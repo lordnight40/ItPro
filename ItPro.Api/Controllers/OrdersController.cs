@@ -5,7 +5,6 @@ using ItPro.Core.Exceptions;
 using ItPro.Core.Helpful;
 using ItPro.Core.Orders;
 using ItPro.Core.Repository;
-using ItPro.Core.Repository.Queries;
 using ItPro.Core.Statistics;
 using ItPro.Data.Entities;
 using ItPro.Data.Enums;

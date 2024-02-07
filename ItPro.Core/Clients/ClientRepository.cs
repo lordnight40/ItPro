@@ -8,22 +8,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItPro.Core.Clients;
 
+/// <summary>
+/// Репозиторий для работы с клиентами.
+/// </summary>
 public sealed class ClientRepository : BaseRepository<Client>
 {
     public ClientRepository(DataContext context) : base(context)
     {
     }
 
+    /// <inheritdoc/>
     public override async Task<PagedObject<Client>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context.Clients
             .AsNoTracking()
             .ApplySorting(queryString.OrderBy, queryString.SortingOrder)
-            .FilterBy(queryString as ClientQueryParameters);
+            .ApplyFilter(queryString as ClientQueryParameters);
 
         return await getQuery.ToPagedListAsync(queryString.PageNumber, queryString.PageSize, cancellationToken);
     }
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// Перед удалением клиента происходит удаление его заказов.
+    /// </remarks>
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await this.context.Clients

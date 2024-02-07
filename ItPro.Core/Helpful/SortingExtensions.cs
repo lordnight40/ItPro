@@ -6,6 +6,14 @@ namespace ItPro.Core.Helpful;
 
 public static class SortingExtensions
 {
+    /// <summary>
+    /// Метод расширения, который применяет сортировку к запросу.
+    /// </summary>
+    /// <param name="query">Строитель запроса.</param>
+    /// <param name="sortingFieldName">Название поля, по которому происходит сортировка.</param>
+    /// <param name="direction">Направление сортировки.</param>
+    /// <typeparam name="T">Тип сущности к которому применяется сортировка.</typeparam>
+    /// <returns>Строитель запроса, содержащий сортировку.</returns>
     public static IQueryable<T> ApplySorting<T>(
         this IQueryable<T> query,
         string sortingFieldName,

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItPro.Core.Repository;
 
+/// <inheritdoc/>
+/// <remarks>Базовая реализация.</remarks>
 public class BaseRepository<T> : IRepository<T> where T: BaseEntity
 {
     protected readonly DataContext context;
@@ -16,6 +18,12 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         this.context = context;
     }
     
+    /// <inheritdoc/>
+    /// <remarks>
+    /// Базовая реализация не содержит фильтрации из-за выбранного мною решения использовать типизированные методы расширения.
+    /// В теории можно было использовать что-то вроде шаблонного метода.
+    /// В рамках этого проекта фильтрация задаётся в более конкретной реализации.
+    /// </remarks>
     public virtual async Task<PagedObject<T>> GetAllAsync(QueryStringParameters queryString, CancellationToken cancellationToken = default)
     {
         var getQuery = this.context
@@ -26,6 +34,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return await getQuery.ToPagedListAsync(queryString.PageNumber, queryString.PageSize, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public virtual async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await this.context
@@ -35,6 +44,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
             .SingleOrDefaultAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public virtual async Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
@@ -51,6 +61,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (!await this.context.Set<T>().AnyAsync(x => x.Id == entity.Id, cancellationToken))
@@ -67,6 +78,7 @@ public class BaseRepository<T> : IRepository<T> where T: BaseEntity
         return entity;
     }
 
+    /// <inheritdoc/>
     public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await this.context

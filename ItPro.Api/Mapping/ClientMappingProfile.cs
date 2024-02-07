@@ -1,11 +1,13 @@
 using AutoMapper;
 using ItPro.Api.Models;
 using ItPro.Core.Helpful;
-using ItPro.Core.Repository;
 using ItPro.Data.Entities;
 
 namespace ItPro.Api.Mapping;
 
+/// <summary>
+/// Настройки маппинга для клиента.
+/// </summary>
 public sealed class ClientMappingProfile : Profile
 {
     public ClientMappingProfile()
