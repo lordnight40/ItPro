@@ -1,5 +1,14 @@
 USE [ItPro]
 GO
+IF EXISTS(
+    SELECT
+        [type_desc],
+        [type]
+    FROM [sys].[procedures] WITH(NOLOCK)
+    WHERE [name] = 'GetBirthdayReceiptSumByClients'
+        AND [type] = 'p'
+) DROP PROCEDURE [dbo].[GetBirthdayReceiptSumByClients]
+GO
 CREATE PROCEDURE [dbo].[GetBirthdayReceiptSumByClients]
 AS
 BEGIN
