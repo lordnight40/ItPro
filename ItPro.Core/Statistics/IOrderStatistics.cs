@@ -7,7 +7,7 @@ namespace ItPro.Core.Statistics;
 
 public interface IOrderStatistics
 {
-    Task<IEnumerable<BirthDaysReceiptStatistics>> GetBirthdayReceiptsStatisticsAsync(QueryStringParameters parameters, CancellationToken cancellationToken = default);
+    Task<IEnumerable<BirthDaysReceiptStatistics>> GetBirthdayReceiptsStatisticsAsync(CancellationToken cancellationToken = default);
 
     Task<IEnumerable<HourlyAverageReceiptSumStatistics>> GetHourlyAverageReceiptSumStatisticsAsync(
         Status status,

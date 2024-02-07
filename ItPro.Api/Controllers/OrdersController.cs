@@ -170,15 +170,12 @@ public sealed class OrdersController : ControllerBase
     /// <summary>
     /// Получить сумму заказов со статусом выполнен по каждому клиенту, произведенных в день рождения клиента.
     /// </summary>
-    /// <param name="parameters">Параметры запроса</param>
     /// <returns></returns>
     [HttpGet("birthday-receipts-statistics")]
     [ProducesResponseType(typeof(PagedObject<BirthDaysReceiptStatistics>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> BirthdayReceiptStatistics([FromQuery] QueryStringParameters parameters)
+    public async Task<IActionResult> BirthdayReceiptStatistics()
     {
-        var result = await this.orderStatistics.GetBirthdayReceiptsStatisticsAsync(
-            parameters,
-            HttpContext.RequestAborted);
+        var result = await this.orderStatistics.GetBirthdayReceiptsStatisticsAsync(HttpContext.RequestAborted);
 
         return Ok(result);
     }

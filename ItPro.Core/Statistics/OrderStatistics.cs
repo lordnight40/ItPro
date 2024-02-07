@@ -15,7 +15,7 @@ public sealed class OrderStatistics : IOrderStatistics
         this.context = context;
     }
 
-    public async Task<IEnumerable<BirthDaysReceiptStatistics>> GetBirthdayReceiptsStatisticsAsync(QueryStringParameters parameters, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<BirthDaysReceiptStatistics>> GetBirthdayReceiptsStatisticsAsync(CancellationToken cancellationToken = default)
     {
         return await this.context
             .Set<BirthDaysReceiptStatistics>()
