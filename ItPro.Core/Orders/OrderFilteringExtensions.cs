@@ -28,8 +28,6 @@ public static class OrderFilteringExtensions
         query = queryParameters switch
         {
             // если нужна конкретная дата
-            // тут бы конечно обрезать часть со временем для конкретно этого критерия,
-            // иначе он будет бесполезен, т.к. сравнение по дате и времени более проблематично из-за того, что нужно точно знать компоненты времени
             { CreatedEqual: not null } => query.Where(order => order.CreatedAt.Date == queryParameters.CreatedEqual.Value.Date),
             // до определенной даты
             { CreatedLessOrEqual: not null, CreatedGreaterOrEqual: null } => query.Where(order => order.CreatedAt < queryParameters.CreatedLessOrEqual),
