@@ -3,6 +3,7 @@ using AutoMapper;
 using ItPro.Api.Models;
 using ItPro.Core.Clients;
 using ItPro.Core.Exceptions;
+using ItPro.Core.Helpful;
 using ItPro.Core.Repository;
 using ItPro.Data.Entities;
 using Microsoft.AspNetCore.Mvc;

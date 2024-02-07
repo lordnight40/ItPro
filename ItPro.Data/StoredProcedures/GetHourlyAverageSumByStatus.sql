@@ -14,7 +14,7 @@ CREATE PROCEDURE [dbo].[GetHourlyAverageSumByStatus]
 AS
 BEGIN
 	SELECT
-		[i].[Hour]									AS [Start],
+		CAST([i].[Hour] AS NVARCHAR)				AS [Start],
 		CAST(AVG([o].[Amount]) AS DECIMAL(10,2))	AS [Average]
 	FROM [Orders] AS [o] WITH (NOLOCK)
 			 CROSS APPLY (
@@ -25,6 +25,6 @@ BEGIN
 	WHERE LOWER([o].[Status]) = LOWER(@status)
 	  AND CAST([o].[CreatedAt] AS TIME) BETWEEN [i].[Hour] AND DATEADD(MINUTE, 59, [i].[Hour])
 	GROUP BY [i].[Hour]
-	ORDER BY [Start] ASC;
+	ORDER BY [Start] DESC;
 END
 GO

@@ -28,5 +28,15 @@ public sealed class DataContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder
+            .Entity<BirthDaysReceiptStatistics>()
+            .HasNoKey()
+            .ToView(null);
+        
+        modelBuilder
+            .Entity<HourlyAverageReceiptSumStatistics>()
+            .HasNoKey()
+            .ToView(null);
     }
 }

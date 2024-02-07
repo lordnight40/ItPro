@@ -1,5 +1,6 @@
 using AutoMapper;
 using ItPro.Api.Models;
+using ItPro.Core.Helpful;
 using ItPro.Core.Repository;
 using ItPro.Data.Entities;
 

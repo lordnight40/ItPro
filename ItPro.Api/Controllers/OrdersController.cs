@@ -2,9 +2,13 @@ using System.Net.Mime;
 using AutoMapper;
 using ItPro.Api.Models;
 using ItPro.Core.Exceptions;
+using ItPro.Core.Helpful;
 using ItPro.Core.Orders;
 using ItPro.Core.Repository;
+using ItPro.Core.Repository.Queries;
+using ItPro.Core.Statistics;
 using ItPro.Data.Entities;
+using ItPro.Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItPro.Api.Controllers;
@@ -14,14 +18,17 @@ namespace ItPro.Api.Controllers;
 public sealed class OrdersController : ControllerBase
 {
     private readonly IRepository<Order> repository;
+    private readonly IOrderStatistics orderStatistics;
     private readonly IMapper mapper;
 
     public OrdersController(
         IRepository<Order> repository,
-        IMapper mapper)
+        IMapper mapper,
+        IOrderStatistics orderStatistics)
     {
         this.repository = repository;
         this.mapper = mapper;
+        this.orderStatistics = orderStatistics;
     }
 
     /// <summary>
@@ -158,5 +165,32 @@ public sealed class OrdersController : ControllerBase
         {
             return Problem(e.Message, statusCode: StatusCodes.Status500InternalServerError);
         }
+    }
+
+    /// <summary>
+    /// Получить сумму заказов со статусом выполнен по каждому клиенту, произведенных в день рождения клиента.
+    /// </summary>
+    /// <param name="parameters">Параметры запроса</param>
+    /// <returns></returns>
+    [HttpGet("birthday-receipts-statistics")]
+    [ProducesResponseType(typeof(PagedObject<BirthDaysReceiptStatistics>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> BirthdayReceiptStatistics([FromQuery] QueryStringParameters parameters)
+    {
+        var result = await this.orderStatistics.GetBirthdayReceiptsStatisticsAsync(
+            parameters,
+            HttpContext.RequestAborted);
+
+        return Ok(result);
+    }
+
+    [HttpGet("hourly-average-receipt-sum")]
+    [ProducesResponseType(typeof(IEnumerable<HourlyAverageReceiptSumStatistics>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> HourlyAverageReceiptSum(Status status)
+    {
+        var result = await this.orderStatistics.GetHourlyAverageReceiptSumStatisticsAsync(
+            status,
+            HttpContext.RequestAborted);
+
+        return Ok(result);
     }
 }

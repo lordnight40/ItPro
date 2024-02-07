@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using ItPro.Core.Clients;
 using ItPro.Core.Orders;
 using ItPro.Core.Repository;
+using ItPro.Core.Statistics;
 using ItPro.Data;
 using ItPro.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddTransient<IRepository<Client>, ClientRepository>();
 builder.Services.AddTransient<IRepository<Order>, OrderRepository>();
+builder.Services.AddTransient<IOrderStatistics, OrderStatistics>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

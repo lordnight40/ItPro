@@ -10,7 +10,7 @@ public static class PagedListExtensions
         this IQueryable<T> source,
         int pageNumber,
         int pageSize,
-        CancellationToken cancellationToken = default) where T: BaseEntity
+        CancellationToken cancellationToken = default)
     {
         var count = await source.CountAsync(cancellationToken);
 

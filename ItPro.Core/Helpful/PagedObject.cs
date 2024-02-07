@@ -1,4 +1,4 @@
-namespace ItPro.Core.Repository;
+namespace ItPro.Core.Helpful;
 
 public sealed class PagedObject<T>
 {
@@ -14,9 +14,9 @@ public sealed class PagedObject<T>
     
     public int TotalCount { get; private set; }
     
-    public bool HasPrevious => CurrentPage > 1;
+    public bool HasPrevious => this.CurrentPage > 1;
     
-    public bool HasNext => CurrentPage < TotalPages;
+    public bool HasNext => this.CurrentPage < this.TotalPages;
 
     public PagedObject(
         IEnumerable<T> items,
@@ -24,10 +24,10 @@ public sealed class PagedObject<T>
         int pageNumber,
         int pageSize)
     {
-        TotalCount = count;
-        PageSize = pageSize;
-        CurrentPage = pageNumber;
-        TotalPages = (int) Math.Ceiling(count / (double) pageSize);
+        this.TotalCount = count;
+        this.PageSize = pageSize;
+        this.CurrentPage = pageNumber;
+        this.TotalPages = (int) Math.Ceiling(count / (double) pageSize);
         
         this.items.AddRange(items);
     }

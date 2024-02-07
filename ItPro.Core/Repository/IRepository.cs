@@ -1,3 +1,4 @@
+using ItPro.Core.Helpful;
 using ItPro.Core.Repository.Queries;
 using ItPro.Data.Entities;
 
