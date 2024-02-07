@@ -20,5 +20,9 @@ public sealed class ClientConfiguration : IEntityTypeConfiguration<Client>
             .WithOne(order => order.Client)
             // Лучше оставить Restrict, т.к. по умолчания Cascade, а каскадное удаление на практике редко нужно
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .Property(client => client.BirthDay)
+            .HasColumnType("date");
     }
 }
